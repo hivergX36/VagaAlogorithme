@@ -1,1 +1,1 @@
-# VagaAlgorithm
+# VegaAlgorithm
