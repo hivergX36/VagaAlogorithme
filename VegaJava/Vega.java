@@ -3,7 +3,7 @@ import java.io.*;
 
 
 
-public class Genetic {
+public class Vega {
 
     int NbVariable;
     int NbConstraints;
@@ -31,7 +31,7 @@ public class Genetic {
 
 
  
-    Genetic(String name, Integer nbpop , Integer nbind){
+    Vega(String name, Integer nbpop , Integer nbind){
 
  
         this.Nbind = nbind;
@@ -237,10 +237,12 @@ public class Genetic {
                      System.out.println("individu_" +  i + " : ");
                 for(int j = 0; j < NbVariable; j++){
     
-                         System.out.println(this.Population[i].solution[j] + " ");
+                         System.out.println(this.Population[i].solution[j] );
                 }
-    
+                     System.out.println("obj1: " + this.Population[i].FitnessValue1);
                      System.out.println("\t");
+                    System.out.println("obj2: " + this.Population[i].FitnessValue2);
+
     
     
             }
@@ -275,7 +277,7 @@ public class Genetic {
                     for(int i = 0; i < NbVariable; i++){
                         fitnessvalue += Population[compteur].solution[i] * Price[i];
                     }
-                    Population[compteur].FitnessValue = fitnessvalue; 
+                    Population[compteur].FitnessValue1 = fitnessvalue; 
                     Population[compteur].fitnessCalculated = true;
                 }
     
@@ -295,7 +297,7 @@ public class Genetic {
                     for(int i = 0; i < NbVariable; i++){
                         fitnessvalue += Echantillon[compteur].solution[i] * Price[i];
                     }
-                    Echantillon[compteur].FitnessValue = fitnessvalue; 
+                    Echantillon[compteur].FitnessValue1 = fitnessvalue; 
                     Echantillon[compteur].fitnessCalculated = true;
                 }
     
@@ -310,17 +312,20 @@ public class Genetic {
         void Tournament(){
         Random random = new Random(); 
         int taillelist = this.Nbind; 
-        Solution MyList[] = new Solution[taillelist];
+        Solution MyList1[] = new Solution[taillelist];
+        Solution MyList2[] = new Solution[taillelist]; 
             int compteur = 0;
-            int randomIndividual;
+            int randomIndividual1;
+            int randomIndividual2; 
             while(compteur < this.Nbind){
                 for(int i = 0; i < Nbind; i++){
-                randomIndividual = random.nextInt(this.Nbind);
-                MyList[compteur] = Population[randomIndividual];
+                randomIndividual1 = random.nextInt(this.Nbind);
+                MyList1[compteur] = Population[randomIndividual1];
+
     
                 }
-             Arrays.sort(MyList, Collections.reverseOrder());
-             this.Echantillon[compteur] = MyList[0];
+             Arrays.sort(MyList1, Collections.reverseOrder());
+             this.Echantillon[compteur] = MyList1[0];
              compteur++; 
     
     
