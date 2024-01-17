@@ -8,12 +8,13 @@ public class Vega {
     int NbVariable;
     int NbConstraints;
     int IndCandidat;
+    int NbObj; 
     int NbPop;
     int Nbind; 
 
     
-
-    int[] Price;
+    /*Price function */
+    int[][] Price;
     /* Utility function */
 
     /*Matrix of constraint*/
@@ -29,7 +30,7 @@ public class Vega {
     Solution[] Echantillon; 
 
 
-
+//Faire le nombre d'objectif 
  
     Vega(String name, Integer nbpop , Integer nbind){
 
@@ -37,7 +38,7 @@ public class Vega {
         this.Nbind = nbind;
         this.NbPop = nbpop;  
         Population = new Solution[this.NbPop];
-        Echantillon = new Solution[this.NbVariable];
+        Echantillon = new Solution[this.Nbind];
         
 
         File input = new File(name);
@@ -48,17 +49,26 @@ public class Vega {
             String[] nums = reader.nextLine().split(",");
             this.NbVariable = Integer.parseInt(nums[0]);
             this.NbConstraints = Integer.parseInt(nums[1]);
-            this.Price = new int[this.NbVariable];
+            System.out.println(this.NbConstraints);
+
+            this.NbObj = Integer.parseInt(nums[2]);
+            System.out.println(this.NbObj);
+            this.Price = new int[this.NbObj][this.NbVariable];
             this.CostMatrix = new double[this.NbConstraints][this.NbVariable];
             this.constraint = new double[this.NbConstraints];
+            
+            
+            for(int i = 0; i < this.NbObj; i++){
+                nums = reader.nextLine().split(",");
+                System.out.println(i);
 
-            nums = reader.nextLine().split(",");
+                for(int j = 0; j < this.NbVariable; j++){
+                    System.out.println(j);
 
+                    System.out.println(nums[j]);
 
-
-            for(int i = 0; i < this.NbVariable; i++){
-                this.Price[i] = Integer.parseInt(nums[i]);
-        
+                    this.Price[i][j] = Integer.parseInt(nums[j]);
+                }
             }
 
                 for(int i = 0; i < this.NbConstraints; i++){
@@ -232,12 +242,11 @@ public class Vega {
     
     
         void displayPopulation(){
-                 System.out.println("La population est: "); 
+            System.out.println("La population est: "); 
             for(int i = 0;i < NbPop; i++){
-                     System.out.println("individu_" +  i + " : ");
+                System.out.println("individu_" +  i + " : ");
                 for(int j = 0; j < NbVariable; j++){
-    
-                         System.out.println(this.Population[i].solution[j] );
+                    System.out.println(this.Population[i].solution[j] );
                 }
                      System.out.println("obj1: " + this.Population[i].FitnessValue1);
                      System.out.println("\t");
@@ -268,16 +277,24 @@ public class Vega {
 
     
         void fitnessValuePop(/*std::vector<Solution> & Echantillon, int dim*/){
-            float fitnessvalue; 
+            float fitnessvalue1; 
+            float fitnessvalue2;
             int compteur = 0;
             while(compteur < NbPop)
             {
-                fitnessvalue = 0; 
+                fitnessvalue1 = 0; 
+                fitnessvalue2 = 0; 
+
+            
                 if(Population[compteur].fitnessCalculated == false){
                     for(int i = 0; i < NbVariable; i++){
-                        fitnessvalue += Population[compteur].solution[i] * Price[i];
+                        fitnessvalue1 += Population[compteur].solution[i] * Price[0][i];
+                        fitnessvalue2 += Population[compteur].solution[i] * Price[1][i];
+
                     }
-                    Population[compteur].FitnessValue1 = fitnessvalue; 
+                    Population[compteur].FitnessValue1 = fitnessvalue1; 
+                    Population[compteur].FitnessValue2 = fitnessvalue2; 
+
                     Population[compteur].fitnessCalculated = true;
                 }
     
@@ -288,16 +305,24 @@ public class Vega {
         }
     
         void fitnessValueSample(){
-            float fitnessvalue; 
+            float fitnessvalue1; 
+            float fitnessvalue2; 
+
             int compteur = 0;
             while(compteur < Nbind)
             {
-                fitnessvalue = 0; 
+                fitnessvalue1 = 0; 
+                fitnessvalue2 = 0; 
+
                 if(Echantillon[compteur].fitnessCalculated == false){
                     for(int i = 0; i < NbVariable; i++){
-                        fitnessvalue += Echantillon[compteur].solution[i] * Price[i];
+                        fitnessvalue1 += Echantillon[compteur].solution[i] * Price[0][i];
+                        fitnessvalue2 += Echantillon[compteur].solution[i] * Price[0][i];
+
                     }
-                    Echantillon[compteur].FitnessValue1 = fitnessvalue; 
+                    Echantillon[compteur].FitnessValue1 = fitnessvalue1; 
+                    Echantillon[compteur].FitnessValue2 = fitnessvalue2; 
+
                     Echantillon[compteur].fitnessCalculated = true;
                 }
     
@@ -312,21 +337,41 @@ public class Vega {
         void Tournament(){
         Random random = new Random(); 
         int taillelist = this.Nbind; 
-        Solution MyList1[] = new Solution[taillelist];
-        Solution MyList2[] = new Solution[taillelist]; 
+        Solution  MyList1[] = new Solution [8];
+        Solution  MyList2[] = new Solution [8]; 
+
+
             int compteur = 0;
             int randomIndividual1;
             int randomIndividual2; 
-            while(compteur < this.Nbind){
-                for(int i = 0; i < Nbind; i++){
+            while(compteur < 8){
+                for(int i = 0; i < 8; i++){
                 randomIndividual1 = random.nextInt(this.Nbind);
-                MyList1[compteur] = Population[randomIndividual1];
+                randomIndividual2 = random.nextInt(this.Nbind);
+
+                MyList1[i] = Population[randomIndividual1];
+                MyList2[i] = Population[randomIndividual2]; 
 
     
                 }
-             Arrays.sort(MyList1, Collections.reverseOrder());
+
+                System.out.println("Operateur1l1: "+  MyList1[0].FitnessValue1);
+                System.out.println("Operateur1l2: "+  MyList2[0].FitnessValue1);
+                System.out.println("Operateur2l1: "+  MyList1[0].FitnessValue2);
+                System.out.println("Operateur2l2: "+  MyList2[0].FitnessValue1);
+
+    
+             Arrays.sort(MyList1, Solution.OperatorFitness1);
+             Arrays.sort(MyList2, Solution.OperatorFitness2);
+
+             System.out.println("Operateur1: "+  MyList1[0].FitnessValue1);
+             System.out.println("Operateur2: "+  MyList2[0].FitnessValue2);
+
+
+             System.out.println("erreur?: ");
+             
              this.Echantillon[compteur] = MyList1[0];
-             compteur++; 
+             compteur += 2; 
     
     
     
@@ -500,21 +545,23 @@ public class Vega {
     Random rand = new Random(); 
     int nbCrossover;
     this.initPopulation();
-    this.displayPopulation();
-    for(int i = 0; i < Nbgen; i++){
+    System.out.println("La population est créée");
+   //for(int i = 0; i < Nbgen; i++){
         this.fitnessValuePop();
+        this.displayPopulation();
+
 
 
         this.Tournament();
-        nbCrossover = rand.nextInt(this.Nbind - 0) + 0;
+   /*      nbCrossover = rand.nextInt(this.Nbind - 0) + 0;
         for(int k = 0; k < nbCrossover; k++){
             this.CrossoverMutation();
 
         }
         this.UpdateFusionPopulation();
     }
-    Arrays.sort(Population, Collections.reverseOrder());
-    displayPopulation();
+    Arrays.sort(Population, Collections.reverseOrder()); */
+    displayPopulation(); 
 }
     
 
