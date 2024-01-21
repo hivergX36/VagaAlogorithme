@@ -153,10 +153,14 @@ public class Vega {
                 compteur++;
             }
         }
+        if(compteur > 0){
 
         indice = random.nextInt(compteur - 0) + 0;
         choix = listChoix.get(indice);
         individual.solution[choix] = 0;
+
+        }
+        
 
     }
 
@@ -336,18 +340,37 @@ public class Vega {
     
         void Tournament(){
         Random random = new Random(); 
-        int taillelist = this.Nbind; 
-        Solution  MyList1[] = new Solution [8];
-        Solution  MyList2[] = new Solution [8]; 
+        int taillelist;
+        int supcompteur;
+
+
+
+        if (this.Nbind %  2 == 0){
+
+            taillelist = this.Nbind / 2;
+            supcompteur = this.Nbind;
+
+
+
+        } 
+        else{
+
+            taillelist = (this.Nbind + 1) / 2;
+            supcompteur = this.Nbind + 1;
+        };
+
+        Solution  MyList1[] = new Solution [taillelist];
+        Solution  MyList2[] = new Solution [taillelist]; 
+
 
 
             int compteur = 0;
             int randomIndividual1;
             int randomIndividual2; 
-            while(compteur < 8){
-                for(int i = 0; i < 8; i++){
-                randomIndividual1 = random.nextInt(this.Nbind);
-                randomIndividual2 = random.nextInt(this.Nbind);
+            while(compteur < supcompteur){
+                for(int i = 0; i < taillelist; i++){
+                randomIndividual1 = random.nextInt(this.NbPop);
+                randomIndividual2 = random.nextInt(this.NbPop);
 
                 MyList1[i] = Population[randomIndividual1];
                 MyList2[i] = Population[randomIndividual2]; 
@@ -371,7 +394,11 @@ public class Vega {
              System.out.println("erreur?: ");
              
              this.Echantillon[compteur] = MyList1[0];
-             compteur += 2; 
+             if(compteur + 1 < supcompteur ){
+             this.Echantillon[compteur + 1] = MyList2[0];
+             }
+
+             compteur ++; 
     
     
     
@@ -479,11 +506,15 @@ public class Vega {
                     compteur++;
                 }
             }
-                         
 
-            indice = random.nextInt(compteur);
-            choix = listChoix.get(indice);
-            Enfant.solution[choix] = 1;
+            if(compteur > 0){
+
+                indice = random.nextInt(compteur - 0) + 0;
+                choix = listChoix.get(indice);
+                Enfant.solution[choix] = 0;
+        
+                }
+                
     
     
     
@@ -514,6 +545,14 @@ public class Vega {
        }
     
        void UpdateFusionPopulation(){
+        int compteur;
+        int comptList = 0; 
+
+        if(this.NbPop % 2 == 0){
+            compteur = this.NbPop / 2;
+        }else{
+            compteur = (this.NbPop + 1) / 2;
+        }
         fitnessValueSample();
         int tailleList = this.NbPop + this.Nbind;
         int indlist;
@@ -524,7 +563,7 @@ public class Vega {
             List[i] = this.Population[i];
         }
     
-        for(int j = 0; j < Nbind; j++){
+        for(int j = 0; j < this.Nbind; j++){
 
             indlist = this.NbPop + j;
     
@@ -532,13 +571,22 @@ public class Vega {
         }
     
     
-        Arrays.sort(List, Collections.reverseOrder());
+        Arrays.sort(List, Solution.OperatorFitness1);
     
     
-        for(int k = 0; k < NbPop; k++){
+        for(int k = 0; k < compteur; k++){
             this.Population[k] = List[k];
         
         }
+
+        Arrays.sort(List, Solution.OperatorFitness2);
+
+        for(int k = 0; k < compteur; k++){
+            this.Population[k] = List[comptList];
+            comptList += 1; 
+        
+        }
+
        }
     
     void resolve(int Nbgen){ 
@@ -546,22 +594,20 @@ public class Vega {
     int nbCrossover;
     this.initPopulation();
     System.out.println("La population est créée");
-   //for(int i = 0; i < Nbgen; i++){
+   for(int i = 0; i < Nbgen; i++){
         this.fitnessValuePop();
         this.displayPopulation();
-
-
-
         this.Tournament();
-   /*      nbCrossover = rand.nextInt(this.Nbind - 0) + 0;
+     nbCrossover = rand.nextInt(this.Nbind - 0) + 0;
         for(int k = 0; k < nbCrossover; k++){
             this.CrossoverMutation();
 
         }
         this.UpdateFusionPopulation();
     }
-    Arrays.sort(Population, Collections.reverseOrder()); */
-    displayPopulation(); 
+  /*   Arrays.sort(Population, Collections.reverseOrder()); */
+  Arrays.sort(this.Population, Solution.OperatorFitness1);
+  this.displayPopulation(); 
 }
     
 
