@@ -49,13 +49,14 @@ public class Vega {
             String[] nums = reader.nextLine().split(",");
             this.NbVariable = Integer.parseInt(nums[0]);
             this.NbConstraints = Integer.parseInt(nums[1]);
-            System.out.println(this.NbConstraints);
-
             this.NbObj = Integer.parseInt(nums[2]);
-            System.out.println(this.NbObj);
             this.Price = new int[this.NbObj][this.NbVariable];
             this.CostMatrix = new double[this.NbConstraints][this.NbVariable];
             this.constraint = new double[this.NbConstraints];
+            System.out.println(this.NbObj);
+            nums = reader.nextLine().split(",");
+
+     /* 
             
             
             for(int i = 0; i < this.NbObj; i++){
@@ -84,6 +85,8 @@ public class Vega {
             for(int i = 0; i < NbConstraints; i++){
                 this.constraint[i] = Float.parseFloat(nums[i]);
             }
+
+              */
             reader.close();
 
         
@@ -94,7 +97,7 @@ public class Vega {
 
   };
   
-  
+
   public void displayCostMatrix(){
         for(int i = 0; i < NbConstraints; i++){
             for(int j = 0; j < NbVariable; j++)
