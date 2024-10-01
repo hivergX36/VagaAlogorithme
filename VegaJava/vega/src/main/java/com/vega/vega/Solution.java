@@ -1,3 +1,4 @@
+package com.vega.vega;
 import java.util.Comparator;
 
 public class Solution   {
