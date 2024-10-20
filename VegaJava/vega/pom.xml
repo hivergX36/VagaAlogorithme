@@ -45,7 +45,17 @@
     <artifactId>junit</artifactId>
     <version>4.13.1</version>
     <scope>test</scope>
+	
+<dependency>
+    <groupId>io.bestquality</groupId>
+    <artifactId>urlmock</artifactId>
+    <version>0.0.18</version>
 </dependency>
+</dependency>
+
+
+
+
 	</dependencies>
 
 	<build>

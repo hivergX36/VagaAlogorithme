@@ -38,10 +38,16 @@ public class Solution   {
         @Override
         public int compare(Solution s1, Solution s2) {
             int value = 0;
-            if(s1.getFitness1() >= s2.getFitness1()){
-                value = 1;
-            }else{
+            if(s1.getFitness1() > s2.getFitness1()){
                 value = -1;
+            }else if(s1.getFitness1() < s2.getFitness1()){
+
+                value = 1;
+
+            }
+            
+            else{
+                value = 0;
 
             }
 
@@ -57,11 +63,16 @@ public class Solution   {
         @Override
         public int compare(Solution s1, Solution s2) {
             int value = 0;
-            if(s1.getFitness2() >= s2.getFitness2()){
-                value = 1;
-            }else{
+            if(s1.getFitness2() > s2.getFitness2()){
                 value = -1;
+            }
+            else if(s1.getFitness2() < s2.getFitness2())
+            {
+                value = 1;
 
+            }
+            else{
+                value = 0; 
             }
 
             return value; 

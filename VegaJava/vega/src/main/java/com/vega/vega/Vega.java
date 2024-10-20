@@ -50,14 +50,13 @@ public class Vega {
             String[] nums = reader.nextLine().split(",");
             this.NbVariable = Integer.parseInt(nums[0]);
             this.NbConstraints = Integer.parseInt(nums[1]);
+            System.out.println(this.NbConstraints);
+
             this.NbObj = Integer.parseInt(nums[2]);
+            System.out.println(this.NbObj);
             this.Price = new int[this.NbObj][this.NbVariable];
             this.CostMatrix = new double[this.NbConstraints][this.NbVariable];
             this.constraint = new double[this.NbConstraints];
-            System.out.println(this.NbObj);
-            nums = reader.nextLine().split(",");
-
-     /* 
             
             
             for(int i = 0; i < this.NbObj; i++){
@@ -86,8 +85,6 @@ public class Vega {
             for(int i = 0; i < NbConstraints; i++){
                 this.constraint[i] = Float.parseFloat(nums[i]);
             }
-
-              */
             reader.close();
 
         
@@ -347,12 +344,13 @@ public class Vega {
         int taillelist;
         int supcompteur;
 
+        supcompteur = this.Nbind;
+
 
 
         if (this.Nbind %  2 == 0){
 
             taillelist = this.Nbind / 2;
-            supcompteur = this.Nbind;
 
 
 
@@ -360,7 +358,6 @@ public class Vega {
         else{
 
             taillelist = (this.Nbind + 1) / 2;
-            supcompteur = this.Nbind + 1;
         };
 
         Solution  MyList1[] = new Solution [taillelist];
@@ -395,9 +392,15 @@ public class Vega {
              System.out.println("Operateur2: "+  MyList2[0].FitnessValue2);
 
 
-             System.out.println("erreur?: ");
+             System.out.println("compteur: " + compteur);
+             System.out.println("subcompteur: " + supcompteur);
+
+
+             if(compteur < supcompteur ){
              
              this.Echantillon[compteur] = MyList1[0];
+             }
+
              if(compteur + 1 < supcompteur ){
              this.Echantillon[compteur + 1] = MyList2[0];
              }
@@ -529,7 +532,7 @@ public class Vega {
     
        
     
-    
+    /* For genetic algorithme
        void UpdateEllitismPopulation(){  
     
     
@@ -547,6 +550,8 @@ public class Vega {
     
     
        }
+
+       */
     
        void UpdateFusionPopulation(){
         int compteur;
@@ -609,7 +614,6 @@ public class Vega {
         }
         this.UpdateFusionPopulation();
     }
-  /*   Arrays.sort(Population, Collections.reverseOrder()); */
   Arrays.sort(this.Population, Solution.OperatorFitness1);
   this.displayPopulation(); 
 }

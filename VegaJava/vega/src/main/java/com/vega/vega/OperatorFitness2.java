@@ -1,7 +1,7 @@
 package com.vega.vega;
 import java.util.Comparator;
 
-
+/* 
 public class OperatorFitness2 implements  Comparator<Solution>  {
 
     
@@ -26,4 +26,4 @@ public class OperatorFitness2 implements  Comparator<Solution>  {
  
 
 
-}
+}*/
